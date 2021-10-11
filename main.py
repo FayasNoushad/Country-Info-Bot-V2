@@ -179,10 +179,12 @@ Timezone : `{country.timezones()}`
     return info, wiki, google
 
 
-@Bot.on_message(filters.private & filters.text & ~filters.command)
+@Bot.on_message(filters.private & filters.text)
 async def countryinfo(bot, update):
     if not await db.is_user_exist(update.from_user.id):
 	    await db.add_user(update.from_user.id)
+    if update.text.startswith("/"):
+        return
     if UPDATE_CHANNEL:
         try:
             user = await bot.get_chat_member(UPDATE_CHANNEL, update.chat.id)
