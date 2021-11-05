@@ -173,10 +173,7 @@ Currencies : `{country.currencies()}`
 Residence : `{country.demonym()}`
 Timezone : `{country.timezones()}`
 """
-    wiki = country.wiki()
-    country_name = country.name().replace(" ", "+")
-    google = "https://www.google.com/search?q=" + country_name
-    return info, wiki, google
+    return info, country.wiki(), country.google()
 
 
 @Bot.on_message(filters.private & filters.text)
