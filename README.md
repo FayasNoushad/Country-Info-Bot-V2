@@ -1,9 +1,3 @@
-# Country-Info-Bot-V2
-
-An advanced telegram country information finder bot
-
----
-
 ```
 Made with Python3
 (C) @FayasNoushad
@@ -16,7 +10,7 @@ License -> https://github.com/FayasNoushad/Country-Info-Bot-V2/blob/main/LICENSE
 ## Deploy
 
 ```sh
-git clone https://github.com/FayasNoushad/Country-Info-Bot-V2
+git clone https://github.com/FayasNoushad/Country-Info-Bot-V2.git
 cd Country-Info-Bot-V2
 pip3 install -r requirements.txt
 # <Create Variables appropriately>
@@ -40,3 +34,5 @@ python3 main.py
 - [Fayas Noushad](https://github.com/FayasNoushad)
 - [Pyrogram](https://github.com/pyrogram/pyrogram)
 - [Country-Info-Bot](https://github.com/FayasNoushad/Country-Info-Bot)
+
+---
