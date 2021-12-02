@@ -66,69 +66,84 @@ ABOUT_TEXT = """--**About Me**-- 😎
 
 📝 **Language :** [Python3](https://python.org)
 
-🧰 **Framework :** [Pyrogram](https://pyrogram.org)
-
-📡 **Server :** [Heroku](https://heroku.com)"""
+🧰 **Framework :** [Pyrogram](https://pyrogram.org)"""
 
 FORCE_SUBSCRIBE_TEXT = "<code>Sorry Dear You Must Join My Updates Channel for using me 😌😉....</code>"
 
 START_BUTTONS = InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('⚙ Help', callback_data='help'),
-        InlineKeyboardButton('About 🔰', callback_data='about'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
-        ]]
-    )
+    [
+	[
+            InlineKeyboardButton('⚙ Help', callback_data='help'),
+            InlineKeyboardButton('About 🔰', callback_data='about'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
+
 HELP_BUTTONS = InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('🏘 Home', callback_data='home'),
-        InlineKeyboardButton('About 🔰', callback_data='about'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
-        ]]
-    )
+    [
+	[
+            InlineKeyboardButton('🏘 Home', callback_data='home'),
+            InlineKeyboardButton('About 🔰', callback_data='about'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
+
 ABOUT_BUTTONS = InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('🏘 Home', callback_data='home'),
-        InlineKeyboardButton('Help ⚙', callback_data='help'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
-        ]]
-    )
+    [
+	[
+            InlineKeyboardButton('🏘 Home', callback_data='home'),
+            InlineKeyboardButton('Help ⚙', callback_data='help'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
+
 ERROR_BUTTON = InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('⚙ Help', callback_data='help'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
-        ]]
-    )
+    [
+	[
+            InlineKeyboardButton('⚙ Help', callback_data='help'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
 
 
 @Bot.on_callback_query()
 async def cb_handler(bot, update):
+    
     if update.data == "home":
         await update.message.edit_text(
             text=START_TEXT.format(update.from_user.mention),
             reply_markup=START_BUTTONS,
             disable_web_page_preview=True
         )
+    
     elif update.data == "help":
         await update.message.edit_text(
             text=HELP_TEXT,
             reply_markup=HELP_BUTTONS,
             disable_web_page_preview=True
         )
+    
     elif update.data == "about":
         await update.message.edit_text(
             text=ABOUT_TEXT.format((await bot.get_me()).username),
             reply_markup=ABOUT_BUTTONS,
             disable_web_page_preview=True
         )
+    
     else:
         await update.message.delete()
 
 
 @Bot.on_message(filters.private & filters.command(["start"]))
 async def start(bot, update):
+    
     if not await db.is_user_exist(update.from_user.id):
 	    await db.add_user(update.from_user.id)
+    
     await update.reply_text(
         text=START_TEXT.format(update.from_user.mention),
         disable_web_page_preview=True,
@@ -138,8 +153,10 @@ async def start(bot, update):
 
 @Bot.on_message(filters.private & filters.command(["help"]))
 async def help(bot, update):
+    
     if not await db.is_user_exist(update.from_user.id):
 	    await db.add_user(update.from_user.id)
+    
     await update.reply_text(
         text=HELP_TEXT,
       	disable_web_page_preview=True,
@@ -149,8 +166,10 @@ async def help(bot, update):
 
 @Bot.on_message(filters.private & filters.command(["about"]))
 async def about(bot, update):
+    
     if not await db.is_user_exist(update.from_user.id):
 	    await db.add_user(update.from_user.id)
+    
     await update.reply_text(
         text=ABOUT_TEXT.format((await bot.get_me()).username),
         disable_web_page_preview=True,
@@ -178,10 +197,13 @@ Timezone : `{country.timezones()}`
 
 @Bot.on_message(filters.private & filters.text)
 async def countryinfo(bot, update):
+    
     if not await db.is_user_exist(update.from_user.id):
-	    await db.add_user(update.from_user.id)
+        await db.add_user(update.from_user.id)
+    
     if update.text.startswith("/"):
         return
+    
     if UPDATE_CHANNEL:
         try:
             user = await bot.get_chat_member(UPDATE_CHANNEL, update.chat.id)
@@ -200,16 +222,22 @@ async def countryinfo(bot, update):
             print(error)
             await update.reply_text(text="Something wrong. Contact <a href='https://telegram.me/TheFayas'>Developer</a>.", disable_web_page_preview=True)
             return
+    
     info, wiki, google = country_info(update.text)
+    
     reply_markup=InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('Wikipedia', url=wiki),
-        InlineKeyboardButton('Google', url=google)
-        ],[
-        InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
-        InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
-        ]]
+        [
+            [
+                InlineKeyboardButton('Wikipedia', url=wiki),
+                InlineKeyboardButton('Google', url=google)
+            ],
+            [
+                InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
+                InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
+            ]
+        ]
     )
+    
     try:
         await bot.send_message(
             chat_id=update.chat.id,
@@ -229,12 +257,12 @@ async def countryinfo(bot, update):
 
 @Bot.on_inline_query()
 async def countryinfo_inline(bot, update):
+    
     join_channel_text = "Please join my channel for more bots and updates"
     channel_reply_markup=InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('😎 Join Channel 😎', url='https://telegram.me/FayasNoushad')
-        ]]
+        [[InlineKeyboardButton('😎 Join Channel 😎', url='https://telegram.me/FayasNoushad')]]
     )
+    
     if UPDATE_CHANNEL:
         try:
             user = await bot.get_chat_member(UPDATE_CHANNEL, update.chat.id)
@@ -257,17 +285,23 @@ async def countryinfo_inline(bot, update):
             return 
         except Exception as error:
             print(error)
-            return 
+            return
+    
     info, wiki, google = country_info(update.query)
+    
     reply_markup=InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('Wikipedia', url=wiki),
-        InlineKeyboardButton('Google', url=google)
-        ],[
-        InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
-        InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
-        ]]
+        [
+            [
+                InlineKeyboardButton('Wikipedia', url=wiki),
+                InlineKeyboardButton('Google', url=google)
+            ],
+            [
+                InlineKeyboardButton('Channel', url='https://telegram.me/FayasNoushad'),
+                InlineKeyboardButton('Feedback', url='https://telegram.me/TheFayas')
+            ]
+        ]
     )
+    
     if update.query == "":
         answers=[
             InlineQueryResultArticle(
@@ -286,6 +320,7 @@ async def countryinfo_inline(bot, update):
                 reply_markup=reply_markup
             )
         ]
+    
     await bot.answer_inline_query(
         inline_query_id=update.chat.id,
         results=answers
@@ -355,9 +390,11 @@ async def broadcast(bot, update):
 
 @Bot.on_message(filters.private & filters.command("status"), group=5)
 async def status(bot, update):
+    
     total_users = await db.total_users_count()
     text = "**Bot Status**\n"
     text += f"\n**Total Users:** `{total_users}`"
+    
     await update.reply_text(
         text=text,
         quote=True,
