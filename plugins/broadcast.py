@@ -30,8 +30,10 @@ async def send_msg(user_id, message):
         return 500, f"{user_id} : {traceback.format_exc()}\n"
 
 
-@Client.on_message(filters.private & filters.command("broadcast") & filters.user(vars.BOT_OWNER) & filters.reply, group=1)
+@Client.on_message(filters.private & filters.command("broadcast") & filters.reply, group=1)
 async def broadcast(_, message):
+    if message.user.id not in vars.AUTH_USERS:
+        return
     broadcast_ids = {}
     all_users = await db.get_all_users()
     broadcast_msg = message.reply_to_message
