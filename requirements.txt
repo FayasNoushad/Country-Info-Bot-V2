@@ -5,3 +5,4 @@ pytz
 motor
 aiofiles
 dnspython
+python-dotenv

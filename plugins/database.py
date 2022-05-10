@@ -1,9 +1,10 @@
+import vars
 import datetime
 import motor.motor_asyncio
 
 
 class Database:
-    def __init__(self, uri, database_name):
+    def __init__(self, uri=vars.DATABASE_URL, database_name=vars.SESSION_NAME):
         self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
         self.db = self._client[database_name]
         self.col = self.db.users
@@ -32,3 +33,6 @@ class Database:
 
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
+
+
+db = Database()
